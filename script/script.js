@@ -1,6 +1,14 @@
 window.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
+  // functions 
+  const animateScroll = (id) => {
+    document.querySelector(id).scrollIntoView({
+      block: 'start',
+      behavior: 'smooth'  
+    });
+  };
+
   // Timer
 
   const countTimer = (deadline) => {
@@ -56,7 +64,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
     btnMenu.addEventListener('click', handlerMenu);
     closeBtn.addEventListener('click', handlerMenu);
-    menuItems.forEach((item) => item.addEventListener('click', handlerMenu));
+
+    menuItems.forEach((item) => item.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      animateScroll(e.target.getAttribute('href'));
+      handlerMenu();
+    }));
   };
   toggleMenu();
 
@@ -97,6 +111,12 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   };
   togglePopUp();
+
+  document.querySelector('a[href="#service-block"]')
+  .addEventListener('click', (e) => {
+    e.preventDefault();
+    animateScroll('#service-block');
+  });
 
 
 });
