@@ -60,16 +60,23 @@ window.addEventListener('DOMContentLoaded', () => {
       menu.classList.toggle('active-menu');
     };
 
-    btnMenu.addEventListener('click', handlerMenu);
+    document.body.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = e.target; 
 
-    menu.addEventListener('click', (e) => {
-      const target = e.target;
-
-      if (target.classList.contains('close-btn')) {
+      if (target.closest('.menu')) {
         handlerMenu();
-      } else if (!target.classList.contains('active-menu')) {
-        e.preventDefault();
-        animateScroll(e.target.getAttribute('href'));
+      } else if (target.closest('menu')) {
+
+        if (target.classList.contains('close-btn')) {
+          handlerMenu();
+
+        } else if (!target.classList.contains('active-menu')) {
+          animateScroll(e.target.getAttribute('href'));
+          handlerMenu();
+        } 
+
+      } else if (menu.classList.contains('active-menu') && target.closest('body')) {
         handlerMenu();
       }
     });
