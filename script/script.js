@@ -178,15 +178,13 @@ window.addEventListener('DOMContentLoaded', () => {
   const addDots = () => {
     const portfolioItem = document.querySelectorAll('.portfolio-item'),
           portfolioDots = document.querySelector('.portfolio-dots');
-     
-    let i = 0;
-    while (i < portfolioItem.length) {
+
+    for (let i = 0; i < portfolioItem.length; i++) {
       const dot = document.createElement('li');
       dot.classList.add('dot');
       portfolioDots.append(dot);
-      i++;
     }
-
+     
     portfolioDots.children[0].classList.add('dot-active');
   };
   addDots();
@@ -280,7 +278,6 @@ window.addEventListener('DOMContentLoaded', () => {
         startSlide();
       }
     });
-
 
   };
   slider();
