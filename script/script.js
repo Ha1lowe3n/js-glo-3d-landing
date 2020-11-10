@@ -9,6 +9,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+
   // Timer
   const countTimer = (deadline) => {
     const timerHours = document.querySelector('#timer-hours'),
@@ -131,6 +132,7 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   togglePopUp();
 
+  
   //button to scroll
   document.querySelector('a[href="#service-block"]')
   .addEventListener('click', (e) => {
@@ -281,5 +283,44 @@ window.addEventListener('DOMContentLoaded', () => {
 
   };
   slider();
+
+
+  // switch imgs
+  const switchImg = () => {
+    const getImg = (img) => {
+      const currentImg = img.src;
+
+      img.addEventListener('mouseenter', (e) => {
+        e.target.src = e.target.dataset.img;
+      });
+
+      img.addEventListener('mouseleave', (e) => {
+        e.target.src = currentImg;
+      });
+    };
+
+    const containerImg = document.querySelectorAll('.container .command__photo');
+
+    containerImg.forEach(item => getImg(item));
+  };
+  switchImg();
+
+
+  // calc
+  const calcNumbers = () => {
+    const calcBlock = document.querySelector('.calc-block');
+
+    const validate = (target) => target = target.replace(/\D/g, '');
+
+    calcBlock.addEventListener('input', (e) => {
+      const target = e.target;
+
+      if (target.matches('.calc-square') || target.matches('.calc-count') || 
+      target.matches('.calc-day')) {
+        target.value = validate(target.value);
+      }
+    });
+  };
+  calcNumbers();
 
 });
