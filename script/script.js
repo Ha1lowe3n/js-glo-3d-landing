@@ -337,7 +337,22 @@ window.addEventListener('DOMContentLoaded', () => {
         total = price * typeValue * squareValue * countValue * dayValue;
       } 
 
-      totalValue.textContent = total;
+      const animate = (elem, value, speed = 20) => {
+        const push = value / 100;
+
+        const interval = setInterval(() => {
+          if (+elem.textContent >= value) {
+            elem.textContent = value;
+            clearInterval(interval);
+          } else {
+            elem.textContent = Math.ceil(+elem.textContent + push);
+          }
+        }, speed);
+
+        return Math.ceil(elem.textContent);
+      };
+
+      totalValue.textContent = animate(totalValue, total);
     };
 
     const validate = (target) => target = target.replace(/\D/g, '');
@@ -347,9 +362,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
       if (target.matches('select') || target.matches('input')) {
         target.value = validate(target.value);
-      }
-
-      if (target.matches('select') || target.matches('input')) {
         countSum();
       }
     });
