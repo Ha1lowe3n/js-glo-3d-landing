@@ -9,6 +9,8 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  const validate = (target) => target = target.replace(/\D/g, '');
+
 
   // Timer
   const countTimer = (deadline) => {
@@ -247,9 +249,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
       if (target.matches('#arrow-right')) {
         currentSlide++;
-      } else if (target.matches('#arrow-left')) {
+      }
+
+      if (target.matches('#arrow-left')) {
         currentSlide--;
-      } else if (target.matches('.dot')) {
+      }  
+      
+      if (target.matches('.dot')) {
         dots.forEach((elem, index) => {
           if (elem === target) {
             currentSlide = index;
@@ -288,14 +294,14 @@ window.addEventListener('DOMContentLoaded', () => {
   // switch imgs
   const switchImg = () => {
     const getImg = (img) => {
-      const currentImg = img.src;
-
       img.addEventListener('mouseenter', (e) => {
-        e.target.src = e.target.dataset.img;
+        [e.target.src, e.target.dataset.img] = 
+        [e.target.dataset.img, e.target.src];
       });
 
       img.addEventListener('mouseleave', (e) => {
-        e.target.src = currentImg;
+        [e.target.dataset.img, e.target.src] =
+        [e.target.src, e.target.dataset.img]; 
       });
     };
 
@@ -354,8 +360,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
       totalValue.textContent = animate(totalValue, total);
     };
-
-    const validate = (target) => target = target.replace(/\D/g, '');
 
     calcBlock.addEventListener('input', (e) => {
       const target = e.target;
