@@ -9,7 +9,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  const validate = (target) => target = target.replace(/\D/g, '');
+  const validate = (target) => target = target.replace(/[^\d.]/gi, '');
 
 
   // Timer
@@ -343,8 +343,8 @@ window.addEventListener('DOMContentLoaded', () => {
         total = price * typeValue * squareValue * countValue * dayValue;
       } 
 
-      const animate = (elem, value, speed = 20) => {
-        const push = value / 100;
+      const animate = (elem, value, speed = 10) => {
+        let push = value / 100;
 
         const interval = setInterval(() => {
           if (+elem.textContent >= value) {
@@ -352,6 +352,7 @@ window.addEventListener('DOMContentLoaded', () => {
             clearInterval(interval);
           } else {
             elem.textContent = Math.ceil(+elem.textContent + push);
+            push += elem.textContent / 100;
           }
         }, speed);
 
