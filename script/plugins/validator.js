@@ -1,4 +1,4 @@
-class Validator {
+class Validate {
   constructor({selector, pattern = {}, method}) {
     this.form = document.querySelector(selector);
     this.pattern = pattern;
@@ -14,43 +14,42 @@ class Validator {
     this.applyStyle();
     this.setPattern();
     this.elementsForm.forEach(elem => elem.addEventListener('change', this.checkIt.bind(this)));
-    this.form.addEventListener('submit', (e) => {
-      this.elementsForm.forEach((item) => this.checkIt({target: item}));
-      if (this.error.size > 0) {
+    this.form.addEventListener('submit', e => {
+      this.elementsForm.forEach( elem => this.checkIt({target: elem}));
+      if ( this.error.size ) {
         e.preventDefault();
       }
     });
   }
 
   isValid(elem) {
-    const validatorMethod = {
+    const validateMethods = {
       notEmpty(elem) {
-        if (elem.value.trim() === '') {
+        if ( elem.value.trim() === '' ) {
           return false;
         }
         return true;
-      },
-      pettern(elem, pattern) {
+      }, 
+      pattern(elem, pattern) {
         return pattern.test(elem.value);
       }
     };
-
+    
     if (this.method) {
       const method = this.method[elem.id];
 
       if (method) {
-          return method.every( item => validatorMethod[item[0]](elem, this.pattern[item[1]]));
+        return method.every( item => validateMethods[item[0]](elem, this.pattern[item[1]]));
       }
-
     } else {
       console.warn('Необходимо передать id полей и методы их проверки');
     }
 
-    return true;
+    return true;        
   }
 
-  checkIt(e) {
-    const target = e.target;
+  checkIt(event) {
+    const target = event.target;
 
     if (this.isValid(target)) {
       this.showSuccess(target);
@@ -65,22 +64,26 @@ class Validator {
     elem.classList.remove('success');
     elem.classList.add('error');
 
-    if (elem.nextElementSibling && elem.nextElementSibling.classList.contains('validator-error')) {
-      return;
+    if (elem.nextElementSibling) {
+      if (elem.nextElementSibling.classList.contains('validate-error')) {
+        return;
+      }
     }
 
     const errorDiv = document.createElement('div');
-    errorDiv.textContent = 'Ошибка в этом поле';
-    errorDiv.classList.add('validator-error');
+    errorDiv.textContent = 'Ошибка';
+    errorDiv.classList.add('validate-error');
     elem.insertAdjacentElement('afterend', errorDiv);
   }
 
   showSuccess(elem) {
     elem.classList.remove('error');
     elem.classList.add('success');
-
-    if (elem.nextElementSibling && elem.nextElementSibling.classList.contains('validator-error')) {
-      elem.nextElementSibling.remove();
+    
+    if (elem.nextElementSibling) {
+      if (elem.nextElementSibling.classList.contains('validate-error')) {
+        elem.nextElementSibling.remove();
+      }
     }
   }
 
@@ -88,28 +91,24 @@ class Validator {
     const style = document.createElement('style');
     style.textContent = `
       input.success {
-        border: 2px solid green
+        border: 2px solid green !important;
       }
       input.error {
-        border: 2px solid red
+        border: 2px solid red !important;
       }
-      .validator-error {
-        font-size: 12px;
+      .validate-error {
+        text-align: left;
+        font-size: 14px;
         font-family: sans-serif;
-        color: red
+        color: red;
       }
     `;
-
     document.head.append(style);
   }
 
   setPattern() {
-    this.pattern.name = this.pattern.name ? this.pattern.name : /([А-ЯЁа-яё]+){2,}/;
-
-    this.pattern.message = this.pattern.message ? this.pattern.message : /([А-ЯЁа-яё]+){2,}/;
-
-    this.pattern.phone = this.pattern.phone ? this.pattern.phone : /^\+?[78]([-()]*\d){10}$/;
-
-    this.pattern.email = this.pattern.email ? this.pattern.email : /^\w+@\w+\.\w{2,}$/;
+    this.pattern['form1-name'] ? this.pattern['form1-name'] = this.pattern : this.pattern['form1-name'] = /([А-ЯЁа-яё]+){2,}/;
+    this.pattern['form1-email'] ? this.pattern['form1-email'] = this.pattern : this.pattern['form1-email'] = /^\w+@\w+\.\w{2,}$/;
+    this.pattern['form1-phone'] ? this.pattern['form1-phone'] = this.pattern : this.pattern['form1-phone'] = /^\+?[78]([-()]*\d){10}$/;
   }
 }

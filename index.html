@@ -15,8 +15,8 @@
 	<meta name="msapplication-TileColor" content="#b91d47">
   <meta name="theme-color" content="#ffffff">
 
-  <script src="./script/plugins/validator.js" defer></script>
-  <script src="./script/script.js" defer></script>
+  <script src="./script/plugins/validator.js"></script>
+  <script src="./script/script.js"></script>
 </head>
 
 <body>
@@ -416,71 +416,78 @@
 </div>
 
 <script>
-	const valid = new Validator({
-		selector: '#form1',
-		pattern: {},
-		method: {			
-			'form1-name': [
-				['notEmpty'],
-				['pattern', 'name'],
-			],
-			'form1-phone': [
-				['notEmpty'],
-				['pattern', 'phone'],
-			],
-			'form1-email': [
-				['notEmpty'],
-				['pattern', 'email'],
-			]
-		},
-	});
-	valid.init();	
+	const validateForm1 = new Validate({
+    selector: '#form1',
+    pattern: {},
+    method: {
+      'form1-name': [
+        ['notEmpty'],
+        ['pattern', 'form1-name']
+      ],
+      'form1-email': [
+        ['notEmpty'],
+        ['pattern', 'form1-email']
+      ],
+      'form1-phone': [
+        ['notEmpty'],
+        ['pattern', 'form1-phone']
+      ]
+    }
+  });
+  validateForm1.init();
 
-	const valid2 = new Validator({
-		selector: '#form2',
-		pattern: {},
-		method: {
-			'form2-name': [
-				['notEmpty'],
-				['pattern', 'name'],
-			],
-			'form2-message': [
-				['notEmpty'],
-				['pattern', 'message'],
-			],
-			'form2-phone': [
-				['notEmpty'],
-				['pattern', 'phone'],
-			],
-			'form2-email': [
-				['notEmpty'],
-				['pattern', 'email'],
-			]
-		},
-	});
+  const validateForm2 = new Validate({
+    selector: '#form2',
+    pattern: {
+      'form2-name': /([А-ЯЁа-яё]+){2,}/,
+      'form2-message': /([А-ЯЁа-яё]+)/,
+      'form2-email': /^\w+@\w+\.\w{2,}$/,
+      'form2-phone': /^\+?[78]([-()]*\d){10}$/
+    },
+    method: {
+      'form2-name': [
+        ['notEmpty'],
+        ['pattern', 'form2-name']
+      ],
+      'form2-email': [
+        ['notEmpty'],
+        ['pattern', 'form2-email']
+      ],
+      'form2-message': [
+        ['notEmpty'],
+        ['pattern', 'form2-message']
+      ],
+      'form2-phone': [
+        ['notEmpty'],
+        ['pattern', 'form2-phone']
+      ]
+    }
+  });
+  validateForm2.init();
 
-	valid2.init();
-
-	const valid3 = new Validator({
-		selector: '#form3',
-		pattern: {},
-		method: {
-			'form3-name': [
-				['notEmpty'],
-				['pattern', 'name'],
-			],
-			'form3-phone': [
-				['notEmpty'],
-				['pattern', 'phone'],
-			],
-			'form3-email': [
-				['notEmpty'],
-				['pattern', 'email'],
-			]
-		},
-	});
-
-	valid3.init();
+  const validateForm3 = new Validate({
+    selector: '#form3',
+    pattern: {
+      'form3-name': /([А-ЯЁа-яё]+){2,}/,
+      'form3-email': /^\w+@\w+\.\w{2,}$/,
+      'form3-phone': /^\+?[78]([-()]*\d){10}$/
+    },
+    method: {
+      'form3-name': [
+        ['notEmpty'],
+        ['pattern', 'form3-name']
+      ],
+      'form3-email': [
+        ['notEmpty'],
+        ['pattern', 'form3-email']
+      ],
+      'form3-phone': [
+        ['notEmpty'],
+        ['pattern', 'form3-phone']
+      ]
+    }
+  });
+  validateForm3.init();
 </script>
 </body>
 </html>
