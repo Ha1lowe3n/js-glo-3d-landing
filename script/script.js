@@ -436,7 +436,19 @@ window.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       form.append(statusMessage);
-      statusMessage.textContent = loadMessage;
+      statusMessage.innerHTML = `
+        <div class="overlay-loader">
+          <div class="loader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      `;
 
       const formData = new FormData(form);
       let body = {};
