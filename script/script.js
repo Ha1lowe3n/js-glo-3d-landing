@@ -9,7 +9,26 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  const validate = (target) => target = target.replace(/[^\d.]/gi, '');
+  const validate = (target) => {
+    const numbers = () => {
+      return target.replace(/[^\d.]/gi, '');
+    };
+
+    const phone = () => {
+      return target.replace(/[^0-9+]$/g, '');
+    };
+
+    const text = () => {
+      return target.replace(/[^а-яё ]$/i, '');
+    };
+
+    return {
+      numbers: numbers,
+      phone: phone,
+      text: text
+    };
+    
+  };
 
 
   // Timer
@@ -51,7 +70,7 @@ window.addEventListener('DOMContentLoaded', () => {
       } 
     }
   };
-  countTimer('06 nov 2020');
+  countTimer('15 nov 2020');
 
 
   // Menu
@@ -63,12 +82,13 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     document.body.addEventListener('click', (e) => {
-      e.preventDefault();
       const target = e.target; 
 
       if (target.closest('.menu')) {
+        e.preventDefault();
         handlerMenu();
       } else if (target.closest('menu')) {
+        e.preventDefault();
 
         if (target.classList.contains('close-btn')) {
           handlerMenu();
@@ -366,11 +386,99 @@ window.addEventListener('DOMContentLoaded', () => {
       const target = e.target;
 
       if (target.matches('select') || target.matches('input')) {
-        target.value = validate(target.value);
+        target.value = validate(target.value).numbers();
         countSum();
       }
     });
   };
   calc(100);
+
+
+  // send-ajax-form
+  const sendForm = (id) => {
+    const errorMessage = 'Что-то пошло не так...',
+          loadMessage = 'Загрузка...',
+          successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
+
+    const form = document.getElementById(id);
+    
+    const statusMessage = document.createElement('div');
+    statusMessage.style.cssText = `
+      font-size: 2rem;
+      color: white
+    `;
+
+    const clearForm = (form) => {
+      [...form.elements].forEach(item => {
+        if (item.tagName.toLowerCase() !== 'button' && item.type !== 'button') {
+          item.value = '';
+        }
+      });
+    };
+
+    const validateForms = (form) => {
+      [...form.elements].forEach(item => {
+        item.addEventListener('input', () => {
+          if (item.tagName.toLowerCase() !== 'button' && item.type !== 'button') {
+            if (item.type === 'tel') {
+              item.value = validate(item.value).phone();
+            }
+
+            if (item.type === 'text' || item.name === 'user_message') {
+              item.value = validate(item.value).text();
+            }
+          }
+        });
+      });
+    };
+    validateForms(form);
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      form.append(statusMessage);
+      statusMessage.textContent = loadMessage;
+
+      const formData = new FormData(form);
+      let body = {};
+      
+      formData.forEach((val, key) => body[key] = val);
+      postData(
+        body, 
+        () => {
+          statusMessage.textContent = successMessage;
+        }, 
+        (error) => {
+          statusMessage.textContent = errorMessage;
+          console.error(error);
+        }
+      );
+    });
+
+    const postData = (body, outputData, errorData) => {
+      const request = new XMLHttpRequest();
+      request.addEventListener('readystatechange', () => {
+        if (request.readyState !== 4) {
+          return;
+        }
+
+        if (request.status === 200) {
+          outputData();
+        } else {
+          errorData(request.status);
+        }
+
+        clearForm(form);
+      });
+
+      request.open('POST', './server.php');
+      request.setRequestHeader('Content-Type', 'application/json');
+
+      request.send(JSON.stringify(body));
+    };
+
+  };
+  sendForm('form1');
+  sendForm('form2');
+  sendForm('form3');
   
 });

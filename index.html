@@ -11,12 +11,11 @@
 	<link rel="apple-touch-icon" sizes="180x180" href="./images/favicon/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="./images/favicon/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="./images/favicon/favicon-16x16.png">
-  <link rel="mask-icon" href="./images/favicon/safari-pinned-tab.svg" color="#5bbad5">
+  	<link rel="mask-icon" href="./images/favicon/safari-pinned-tab.svg" color="#5bbad5">
 	<meta name="msapplication-TileColor" content="#b91d47">
-  <meta name="theme-color" content="#ffffff">
-
-  <script src="./script/plugins/validator.js"></script>
-  <script src="./script/script.js"></script>
+	<meta name="theme-color" content="#ffffff">
+	  
+	  <script src="./script/script.js"></script>
 </head>
 
 <body>
@@ -415,79 +414,5 @@
 	</div>
 </div>
 
-<script>
-	const validateForm1 = new Validate({
-    selector: '#form1',
-    pattern: {},
-    method: {
-      'form1-name': [
-        ['notEmpty'],
-        ['pattern', 'form1-name']
-      ],
-      'form1-email': [
-        ['notEmpty'],
-        ['pattern', 'form1-email']
-      ],
-      'form1-phone': [
-        ['notEmpty'],
-        ['pattern', 'form1-phone']
-      ]
-    }
-  });
-  validateForm1.init();
-
-  const validateForm2 = new Validate({
-    selector: '#form2',
-    pattern: {
-      'form2-name': /([А-ЯЁа-яё]+){2,}/,
-      'form2-message': /([А-ЯЁа-яё]+)/,
-      'form2-email': /^\w+@\w+\.\w{2,}$/,
-      'form2-phone': /^\+?[78]([-()]*\d){10}$/
-    },
-    method: {
-      'form2-name': [
-        ['notEmpty'],
-        ['pattern', 'form2-name']
-      ],
-      'form2-email': [
-        ['notEmpty'],
-        ['pattern', 'form2-email']
-      ],
-      'form2-message': [
-        ['notEmpty'],
-        ['pattern', 'form2-message']
-      ],
-      'form2-phone': [
-        ['notEmpty'],
-        ['pattern', 'form2-phone']
-      ]
-    }
-  });
-  validateForm2.init();
-
-  const validateForm3 = new Validate({
-    selector: '#form3',
-    pattern: {
-      'form3-name': /([А-ЯЁа-яё]+){2,}/,
-      'form3-email': /^\w+@\w+\.\w{2,}$/,
-      'form3-phone': /^\+?[78]([-()]*\d){10}$/
-    },
-    method: {
-      'form3-name': [
-        ['notEmpty'],
-        ['pattern', 'form3-name']
-      ],
-      'form3-email': [
-        ['notEmpty'],
-        ['pattern', 'form3-email']
-      ],
-      'form3-phone': [
-        ['notEmpty'],
-        ['pattern', 'form3-phone']
-      ]
-    }
-  });
-  validateForm3.init();
-</script>
 </body>
 </html>
