@@ -27,7 +27,6 @@ window.addEventListener('DOMContentLoaded', () => {
       phone: phone,
       text: text
     };
-    
   };
 
 
@@ -408,14 +407,6 @@ window.addEventListener('DOMContentLoaded', () => {
       color: white
     `;
 
-    const clearForm = (form) => {
-      [...form.elements].forEach(item => {
-        if (item.tagName.toLowerCase() !== 'button' && item.type !== 'button') {
-          item.value = '';
-        }
-      });
-    };
-
     const validateForms = (form) => {
       [...form.elements].forEach(item => {
         item.addEventListener('input', () => {
@@ -479,7 +470,10 @@ window.addEventListener('DOMContentLoaded', () => {
           errorData(request.status);
         }
 
-        clearForm(form);
+        form.reset();
+        setTimeout(() => {
+          statusMessage.remove();
+        }, 3000);
       });
 
       request.open('POST', './server.php');
