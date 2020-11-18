@@ -363,7 +363,7 @@ window.addEventListener('DOMContentLoaded', () => {
       } 
 
       const animate = (elem, value, speed = 10) => {
-        let push = value / 100;
+        let push = 1;
 
         const interval = setInterval(() => {
           if (+elem.textContent >= value) {
@@ -396,7 +396,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // send-ajax-form
   const sendForm = () => {
     const errorMessage = 'Что-то пошло не так...',
-          //loadMessage = 'Загрузка...',
+          loadMessage = 'Загрузка...',
           successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
 
     const forms = document.querySelectorAll('form');
@@ -447,41 +447,42 @@ window.addEventListener('DOMContentLoaded', () => {
         let body = {};
         
         formData.forEach((val, key) => body[key] = val);
-        postData(
-          body, 
-          () => {
-            statusMessage.textContent = successMessage;
-          }, 
-          (error) => {
-            statusMessage.textContent = errorMessage;
-            console.error(error);
-          }
-        );
+
+        postData(body)
+        .then(() => statusMessage.textContent = successMessage)
+        .catch(error => {
+          console.error(error);
+          statusMessage.textContent = errorMessage;
+        });
+
       });
   
-      const postData = (body, outputData, errorData) => {
-        const request = new XMLHttpRequest();
-        request.addEventListener('readystatechange', () => {
-          if (request.readyState !== 4) {
-            return;
-          }
+      const postData = (body) => {
+        return new Promise((resolve, reject) => {
+          const request = new XMLHttpRequest(form);
+          request.addEventListener('readystatechange', () => {
+            if (request.readyState !== 4) {
+              return;
+            }
+    
+            if (request.status === 200) {
+              resolve();
+            } else {
+              reject(request.status);
+            }
+    
+            form.reset();
+            setTimeout(() => {
+              statusMessage.remove();
+            }, 3000);
+          });
   
-          if (request.status === 200) {
-            outputData();
-          } else {
-            errorData(request.status);
-          }
-  
-          form.reset();
-          setTimeout(() => {
-            statusMessage.remove();
-          }, 3000);
+          request.open('POST', './server.php');
+          request.setRequestHeader('Content-Type', 'application/json');
+    
+          request.send(JSON.stringify(body));
         });
-  
-        request.open('POST', './server.php');
-        request.setRequestHeader('Content-Type', 'application/json');
-  
-        request.send(JSON.stringify(body));
+        
       };
     };
 
