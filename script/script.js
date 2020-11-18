@@ -462,13 +462,12 @@ window.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
           console.error(error);
           statusMessage.textContent = errorMessage;
-        })
-        .finally(() => {
-          form.reset();
-          setTimeout(() => {
-            statusMessage.remove();
-          }, 3000);
         });
+
+        form.reset();
+        setTimeout(() => {
+          statusMessage.remove();
+        }, 3000);
 
       });
   
