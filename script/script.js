@@ -362,20 +362,26 @@ window.addEventListener('DOMContentLoaded', () => {
         total = price * typeValue * squareValue * countValue * dayValue;
       } 
 
-      const animate = (elem, value, speed = 10) => {
-        let push = 1;
+      
 
-        const interval = setInterval(() => {
-          if (+elem.textContent >= value) {
-            elem.textContent = value;
-            clearInterval(interval);
-          } else {
-            elem.textContent = Math.ceil(+elem.textContent + push);
-            push += elem.textContent / 100;
+      const animate = (totalValue, total, speed = 10) => {
+        let push = total / 100;
+
+        if (totalValue.textContent !== total) {
+          if (totalValue.textContent > total) {
+            push = -(totalValue.textContent / 100);
           }
-        }, speed);
-
-        return Math.ceil(elem.textContent);
+  
+          let timer = setInterval(() => {
+            totalValue.textContent = Math.ceil(+totalValue.textContent + push);
+            if ((total - totalValue.textContent) * push < 1) {
+              clearInterval(timer);
+              totalValue.textContent = Math.round(total);
+            }
+          }, speed);
+        }
+        
+        return totalValue.textContent;
       };
 
       totalValue.textContent = animate(totalValue, total);
