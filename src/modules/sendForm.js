@@ -13,10 +13,16 @@ const sendForm = () => {
     color: white
   `;
 
+  
+
   const postFunc = (form) => {
 
     const validateForms = (form) => {
       [...form.elements].forEach(item => {
+        if (item.type === 'email') {
+          item.setAttribute("required", true);
+        }
+
         item.addEventListener('input', () => {
           if (item.tagName.toLowerCase() !== 'button' && item.type !== 'button') {
             if (item.type === 'tel') {

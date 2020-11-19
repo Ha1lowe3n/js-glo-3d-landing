@@ -8,7 +8,7 @@ const validate = (target) => {
   };
 
   const text = () => {
-    return target.replace(/[^а-яё ]$/i, '');
+    return target.replace(/[^а-яё _\-,.;!?\:]$/i, '');
   };
 
   return {

@@ -30,8 +30,6 @@ const togglePopup = () => {
     });
   });
 
-  console.log('hello');
-
   popup.addEventListener('click', (e) => {
     let target = e.target;
 
