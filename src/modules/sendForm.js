@@ -34,7 +34,7 @@ const sendForm = () => {
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      form.append(statusMessage);
+      form.appendChild(statusMessage);
       statusMessage.innerHTML = `
         <div class="overlay-loader">
           <div class="loader">

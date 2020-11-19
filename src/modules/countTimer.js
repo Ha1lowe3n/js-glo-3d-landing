@@ -16,7 +16,7 @@ const countTimer = (deadline = '22 nov 2020') => {
   };
 
   updateClock();
-
+  
   function updateClock() {
     const timer = getTimeRemaining();
 
@@ -35,6 +35,7 @@ const countTimer = (deadline = '22 nov 2020') => {
       clearInterval(timeInterval);
     } 
   }
+
 };
 
 export default countTimer;
