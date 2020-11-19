@@ -7,6 +7,7 @@ elementClosest(window);
 import 'formdata-polyfill';
 import 'es6-promise';
 import 'fetch-polyfill';
+import 'element-remove-polyfill';
 
 
 import btnScroll from './modules/btnScroll';

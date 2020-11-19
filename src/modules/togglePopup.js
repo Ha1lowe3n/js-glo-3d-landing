@@ -2,7 +2,8 @@ const togglePopup = () => {
   let requestId;
 
   const popup = document.querySelector('.popup'),
-        popupBtn = document.querySelectorAll('.popup-btn');
+        popupBtn = document.querySelectorAll('.popup-btn'),
+        formPopup = document.getElementById('form3');
         
   const animation = () => {
     requestId = requestAnimationFrame(animation);
@@ -29,18 +30,31 @@ const togglePopup = () => {
     });
   });
 
+  console.log('hello');
+
   popup.addEventListener('click', (e) => {
     let target = e.target;
+
+    const clearForm = () => {
+      [...formPopup.elements].forEach(item => {
+        if (item.tagName.toLowerCase() !== 'button' && item.type !== 'button') {
+          item.value = '';
+        }
+      });
+    };
     
     if (target.classList.contains('popup-close')) {
       popup.style.display = 'none';
+      clearForm();
     } else {
       target = target.closest('.popup-content');
 
       if (!target) {
         popup.style.display = 'none';
+        clearForm();
       }
     }
+
   });
 
 };
