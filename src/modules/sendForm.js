@@ -5,7 +5,8 @@ const sendForm = () => {
   const errorMessage = 'Что-то пошло не так...',
         successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
 
-  const forms = document.querySelectorAll('form');
+  const forms = document.querySelectorAll('form'),
+        popup = document.querySelector('.popup');
   
   const statusMessage = document.createElement('div');
   statusMessage.style.cssText = `
@@ -13,11 +14,10 @@ const sendForm = () => {
     color: white
   `;
 
-  
-
   const postFunc = (form) => {
 
     const validateForms = (form) => {
+
       [...form.elements].forEach(item => {
         if (item.type === 'email') {
           item.setAttribute("required", true);
@@ -26,14 +26,47 @@ const sendForm = () => {
         item.addEventListener('input', () => {
           if (item.tagName.toLowerCase() !== 'button' && item.type !== 'button') {
             if (item.type === 'tel') {
-              item.value = validate(item.value).phone();
+              item.value = validate(item.value).phoneInput();
             }
 
             if (item.type === 'text' || item.name === 'user_message') {
-              item.value = validate(item.value).text();
+              item.value = validate(item.value).textInput();
+            }
+
+            if (item.type === 'email') {
+              item.value = validate(item.value).emailInput();
             }
           }
         });
+
+        const changeInput = () => {
+          const errorText = document.createElement('div');
+          errorText.classList.add('validate-error');
+
+          const clearError = () => {
+            item.insertAdjacentElement('afterend', errorText);
+              item.value = '';
+              setTimeout(() => {
+                errorText.remove();
+              }, 3000);
+          };
+          
+          if (item.type === 'email') {
+            if (!validate(item.value).emailBlur() && item.value !== '') {
+              errorText.textContent = 'Неверно введен email!';
+              clearError();
+            } 
+          } 
+          
+          if (item.type === 'tel') {
+            if (!validate(item.value).phoneBlur() && item.value !== '') {
+              errorText.textContent = 'Неверно введен номер телефона!';
+              clearError();
+            } 
+          } 
+        };
+
+        item.addEventListener('blur', changeInput);
       });
     };
     validateForms(form);
@@ -74,6 +107,7 @@ const sendForm = () => {
       .finally(() => {
         form.reset();
         setTimeout(() => {
+          popup.style.display = 'none';
           statusMessage.remove();
         }, 3000);
       });
